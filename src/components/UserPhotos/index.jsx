@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Typography, 
   Card, 
@@ -10,10 +10,11 @@ import {
   List,
   Paper,
   Avatar,
-  Stack
+  Stack,
+  CircularProgress
 } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
-import models from "../../modelData/models";
+import fetchModel from "../../lib/fetchModelData";
 import "./styles.css";
 
 /**
@@ -21,8 +22,50 @@ import "./styles.css";
  */
 function UserPhotos() {
     const { userId } = useParams();
-    const photos = models.photoOfUserModel(userId);
-    const user = models.userModel(userId);
+    const [photos, setPhotos] = useState([]);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+      // Load both user details and photos
+      setLoading(true);
+      
+      // Fetch user data
+      const fetchUserData = fetchModel(`/api/user/${userId}`);
+      
+      // Fetch photos data
+      const fetchPhotosData = fetchModel(`/api/photo/${userId}`);
+      
+      // Wait for both requests to complete
+      Promise.all([fetchUserData, fetchPhotosData])
+        .then(([userData, photosData]) => {
+          setUser(userData);
+          setPhotos(photosData);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error loading user photos:', error);
+          setError('Failed to load photos. Please try again later.');
+          setLoading(false);
+        });
+    }, [userId]);
+
+    if (loading) {
+      return (
+        <Box className="photo-container" display="flex" justifyContent="center" alignItems="center" sx={{ minHeight: '300px' }}>
+          <CircularProgress />
+        </Box>
+      );
+    }
+
+    if (error) {
+      return (
+        <Typography variant="h5" color="error">
+          {error}
+        </Typography>
+      );
+    }
 
     if (!user) {
         return (
@@ -35,7 +78,7 @@ function UserPhotos() {
     if (!photos || photos.length === 0) {
         return (
             <Typography variant="h5">
-                No photos found for {user.first_name} {user.last_name}
+                No photos found for {user.first_name || user.first || ''} {user.last_name || ''}
             </Typography>
         );
     }
@@ -76,8 +119,8 @@ function UserPhotos() {
                         <Card elevation={3} className="photo-card">
                             <CardMedia
                                 component="img"
-                                image={`${process.env.PUBLIC_URL}/images/${photo.file_name}`}
-                                alt={`Photo by ${user.first_name}`}
+                                image={`/images/${photo.file_name}`}
+                                alt={`Photo by ${user.first_name || user.first || ''}`}
                                 className="photo-image"
                             />
                             <CardContent>
@@ -98,18 +141,18 @@ function UserPhotos() {
                                                 <Stack direction="row" alignItems="flex-start" spacing={1}>
                                                     <Avatar 
                                                         sx={{ 
-                                                            bgcolor: stringToColor(comment.user.first_name + comment.user.last_name),
+                                                            bgcolor: stringToColor((comment.user?.first_name || '') + (comment.user?.last_name || '')),
                                                             width: 32,
                                                             height: 32,
                                                             fontSize: '0.8rem'
                                                         }}
                                                         className="comment-avatar"
                                                     >
-                                                        {comment.user.first_name.charAt(0)}{comment.user.last_name.charAt(0)}
+                                                        {(comment.user?.first_name || '').charAt(0) || '?'}{(comment.user?.last_name || '').charAt(0) || '?'}
                                                     </Avatar>
                                                     <Box sx={{ flex: 1 }}>
-                                                        <Link to={`/users/${comment.user._id}`} className="comment-user-link">
-                                                            {comment.user.first_name} {comment.user.last_name}
+                                                        <Link to={`/users/${comment.user?._id || '0'}`} className="comment-user-link">
+                                                            {comment.user?.first_name || ''} {comment.user?.last_name || ''}
                                                         </Link>
                                                         <Typography variant="caption" display="block" className="comment-date">
                                                             {formatDateTime(comment.date_time)}
