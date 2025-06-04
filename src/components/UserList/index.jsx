@@ -11,29 +11,31 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./styles.css";
-import fetchModel from "../../lib/fetchModelData";
+import api from "../../lib/useApi";
 
-/**
- * Define UserList, a React component of Project 4.
- */
+
 function UserList() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get("/user/list");
+        // console.log("Fetched users:", response);
+        setUsers(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+        setError(err.response?.data?.message || "Failed to fetch users");
+        setLoading(false);
+      }
+    };
+
     useEffect(() => {
-      // Fetch user list data from the API
       setLoading(true);
-      fetchModel('/api/user/list')
-        .then((userList) => {
-          setUsers(userList);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error loading user list:', error);
-          setError('Failed to load users. Please try again later.');
-          setLoading(false);
-        });
+      fetchUsers();
+
     }, []);
     
     if (loading) {
@@ -75,9 +77,7 @@ function UserList() {
                 className="user-list-item"
               >
                 <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: stringToColor((user.first_name || '') + (user.last_name || '')) }}>
-                    {(user.first_name || '').charAt(0) || '?'}{(user.last_name || '').charAt(0) || '?'}
-                  </Avatar>
+                  <Avatar/>
                 </ListItemAvatar>
                 <ListItemText 
                   primary={`${user.first_name || user.first || ''} ${user.last_name || ''}`}
@@ -90,19 +90,6 @@ function UserList() {
         </List>
       </div>
     );
-}
-
-function stringToColor(string) {
-  let hash = 0;
-  for (let i = 0; i < string.length; i++) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  let color = '#';
-  for (let i = 0; i < 3; i++) {
-    const value = (hash >> (i * 8)) & 0xFF;
-    color += ('00' + value.toString(16)).substr(-2);
-  }
-  return color;
 }
 
 export default UserList;

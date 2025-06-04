@@ -5,7 +5,7 @@
 .photo-page-title {
   margin-bottom: 24px !important;
   font-weight: 500 !important;
-  color: #1976d2;
+  /* color: #1976d2; */
   position: relative;
   padding-left: 16px;
 }
@@ -17,7 +17,7 @@
   top: 0;
   height: 100%;
   width: 4px;
-  background-color: #1976d2;
+  /* background-color: #1976d2; */
   border-radius: 4px;
 }
 
@@ -25,12 +25,12 @@
   margin-bottom: 32px !important;
   border-radius: 12px !important;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
 }
 
 .photo-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+  /* transform: translateY(-5px); */
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important; */
 }
 
 .photo-image {
@@ -45,8 +45,8 @@
   display: inline-block;
   padding: 4px 12px;
   border-radius: 16px;
-  background-color: rgba(25, 118, 210, 0.1);
-  color: #1976d2;
+  /* background-color: rgba(25, 118, 210, 0.1); */
+  /* color: #1976d2; */
   font-weight: 500;
   margin-bottom: 16px !important;
 }
@@ -64,12 +64,12 @@
 .comment-item {
   margin-bottom: 12px !important;
   border-radius: 8px !important;
-  border-left: 3px solid #1976d2;
+  /* border-left: 3px solid #1976d2; */
   transition: transform 0.2s ease;
 }
 
 .comment-item:hover {
-  transform: translateX(5px);
+  /* transform: translateX(5px); */
 }
 
 .comment-user-link {
@@ -79,7 +79,7 @@
 }
 
 .comment-user-link:hover {
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 
 .comment-avatar {
@@ -95,4 +95,10 @@
   white-space: pre-line;
   margin-top: 8px !important;
   font-size: 0.95rem !important;
+}
+
+.delete-photo-button {
+  margin-left: auto;
+  color: #f44336 !important;
+  font-size: 0.875rem !important;
 }

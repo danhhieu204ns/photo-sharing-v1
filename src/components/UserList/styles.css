@@ -6,10 +6,10 @@
 
 .user-list-title {
   padding: 16px;
-  background-color: #f0f6ff;
+  /* background-color: #f0f6ff; */
   border-radius: 6px 6px 0 0;
   margin-bottom: 10px;
-  border-left: 4px solid #1976d2;
+  /* border-left: 4px solid #1976d2; */
 }
 
 .user-list {
@@ -24,8 +24,8 @@
 }
 
 .user-list-item:hover {
-  transform: translateX(5px);
-  background-color: rgba(25, 118, 210, 0.08) !important;
+  /* transform: translateX(5px); */
+  /* background-color: rgba(25, 118, 210, 0.08) !important; */
 }
 
 .user-list-item-text {

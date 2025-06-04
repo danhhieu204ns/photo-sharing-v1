@@ -9,16 +9,16 @@
 }
 
 .user-detail-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  /* transform: translateY(-5px); */
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12); */
 }
 
 .user-detail-header {
   display: flex;
   align-items: center;
   padding: 24px;
-  background: linear-gradient(135deg, #64b5f6 0%, #1976d2 100%);
-  color: white;
+  /* background: linear-gradient(135deg, #64b5f6 0%, #1976d2 100%); */
+  color: black;
 }
 
 .user-detail-avatar {
@@ -26,7 +26,7 @@
   height: 80px !important;
   margin-right: 24px;
   font-size: 2rem !important;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
 }
 
 .user-detail-content {
@@ -38,7 +38,7 @@
 }
 
 .user-detail-field-label {
-  color: #607d8b;
+  /* color: #607d8b; */
   font-weight: 500;
   margin-bottom: 4px;
 }
@@ -49,8 +49,8 @@
 
 .user-detail-button {
   margin-top: 16px !important;
-  background: linear-gradient(45deg, #1976d2 30%, #42a5f5 90%) !important;
-  box-shadow: 0 3px 5px 2px rgba(33, 150, 243, .3) !important;
-  color: white !important;
+  /* background: linear-gradient(45deg, #1976d2 30%, #42a5f5 90%) !important; */
+  /* box-shadow: 0 3px 5px 2px rgba(33, 150, 243, .3) !important; */
+  /* color: black !important; */
   padding: 8px 24px !important;
 }

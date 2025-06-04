@@ -14,30 +14,36 @@ import {
 } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import fetchModel from "../../lib/fetchModelData";
+import api from "../../lib/useApi";
 import "./styles.css";
 
-/**
- * Define UserDetail, a React component of Project 4.
- */
+
 function UserDetail() {
     const { userId } = useParams();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const fetchUserDetails = async (userId) => {
+        try {
+            const userData = await api.get(`/user/${userId}`);
+            // console.log('Fetched user details:', userData);
+            setUser(userData.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error loading user details:', error);
+            setError('Failed to load user details. Please try again later.');
+            setLoading(false);
+        }
+    };
     
     useEffect(() => {
-      // Fetch user details from the API
-      setLoading(true);
-      fetchModel(`/api/user/${userId}`)
-        .then((userData) => {
-          setUser(userData);
+      if (userId) {
+          fetchUserDetails(userId);
+      } else {
+          setError('User ID is required to fetch user details.');
           setLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error loading user details:', error);
-          setError('Failed to load user details. Please try again later.');
-          setLoading(false);
-        });
+      }
     }, [userId]);
     
     if (loading) {
@@ -68,19 +74,14 @@ function UserDetail() {
         <Box className="user-detail-container">
             <Card className="user-detail-card" elevation={3}>
                 <Box className="user-detail-header">
-                    <Avatar 
-                        className="user-detail-avatar"
-                        sx={{ bgcolor: stringToColor((user.first_name || '') + (user.last_name || '')) }}
-                    >
-                        {(user.first_name || '').charAt(0) || '?'}{(user.last_name || '').charAt(0) || '?'}
-                    </Avatar>
+                    <Avatar className="user-detail-avatar"/>
                     <div>
                         <Typography variant="h4" gutterBottom>
-                            {user.first_name || user.first || ''} {user.last_name || ''}
+                            {user.first_name} {user.last_name}
                         </Typography>
                         <Chip 
                             label={user.occupation || ''} 
-                            sx={{ color: 'white', backgroundColor: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}
+                            sx={{ color: 'black', backgroundColor: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}
                         />
                     </div>
                 </Box>
@@ -89,11 +90,11 @@ function UserDetail() {
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6} className="user-detail-section">
                             <Typography variant="subtitle1" className="user-detail-field-label">
-                                Location
+                                Location: {user.location || 'No location provided'}
                             </Typography>
-                            <Typography variant="body1" className="user-detail-field-value">
-                                {user.location || 'No location provided'}
-                            </Typography>
+                            {/* <Typography variant="body1" className="user-detail-field-value">
+                                
+                            </Typography> */}
                         </Grid>
                         
                         <Grid item xs={12} className="user-detail-section">
